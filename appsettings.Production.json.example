@@ -1,0 +1,86 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Database=iotdetector;Username=postgres;Password=YOUR_POSTGRES_PASSWORD_HERE"
+  },
+  "Jwt": {
+    "Key": "GENERATE_A_SECURE_KEY_WITH_openssl_rand_base64_48",
+    "Issuer": "IoTDetectorApi",
+    "Audience": "IoTDetectorClient",
+    "ExpiryMinutes": 60
+  },
+  "AzureIoTHub": {
+    "ConnectionString": "HostName=YOUR_HUB_NAME.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YOUR_IOTHUB_KEY",
+    "EventHubConnectionString": "Endpoint=sb://iothub-ns-XXXXXXX.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YOUR_EVENT_HUB_KEY;EntityPath=YOUR_HUB_NAME",
+    "ConsumerGroup": "$Default"
+  },
+  "IpRateLimiting": {
+    "EnableEndpointRateLimiting": true,
+    "StackBlockedRequests": false,
+    "RealIpHeader": "X-Real-IP",
+    "ClientIdHeader": "X-ClientId",
+    "HttpStatusCode": 429,
+    "IpWhitelist": [],
+    "EndpointWhitelist": [],
+    "ClientWhitelist": [],
+    "GeneralRules": [
+      {
+        "Endpoint": "*",
+        "Period": "1m",
+        "Limit": 60
+      },
+      {
+        "Endpoint": "*/api/auth/login",
+        "Period": "1m",
+        "Limit": 5
+      },
+      {
+        "Endpoint": "*/api/auth/register",
+        "Period": "1h",
+        "Limit": 3
+      },
+      {
+        "Endpoint": "*/api/export/*",
+        "Period": "1m",
+        "Limit": 10
+      }
+    ]
+  },
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information",
+        "System": "Warning",
+        "Microsoft.EntityFrameworkCore": "Warning"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console",
+          "outputTemplate": "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "logs/iot-detector-.log",
+          "rollingInterval": "Day",
+          "retainedFileCountLimit": 30,
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+        }
+      }
+    ],
+    "Enrich": ["FromLogContext", "WithMachineName", "WithThreadId"]
+  },
+  "AllowedHosts": "*",
+  "Kestrel": {
+    "Endpoints": {
+      "Http": {
+        "Url": "http://0.0.0.0:5000"
+      }
+    }
+  }
+}

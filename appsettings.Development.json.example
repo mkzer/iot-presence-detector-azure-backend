@@ -1,0 +1,28 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug",
+      "Microsoft.AspNetCore": "Information",
+      "Microsoft.EntityFrameworkCore": "Information"
+    }
+  },
+  "Azure": {
+    "IoTHub": {
+      "Enabled": true,
+      "ConnectionString": "HostName=YOUR-IOTHUB.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=YOUR_KEY_HERE",
+      "EventHubConnectionString": "Endpoint=sb://YOUR-EVENTHUB.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=YOUR_KEY_HERE;EntityPath=YOUR-IOTHUB",
+      "ConsumerGroup": "$Default"
+    }
+  },
+  "Database": {
+    "Provider": "PostgreSQL"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=YOUR_HOST.neon.tech;Database=YOUR_DB;Username=YOUR_USER;Password=YOUR_PASSWORD;SSL Mode=Require"
+  },
+  "Jwt": {
+    "Key": "YOUR_SUPER_SECRET_JWT_KEY_AT_LEAST_32_CHARACTERS_LONG_!!!!!",
+    "Issuer": "IoTDetectorApi",
+    "Audience": "IoTDetectorClient"
+  }
+}
