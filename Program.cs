@@ -79,7 +79,13 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:3000", "http://localhost:3001", "http://localhost:3002")
+        policy.WithOrigins(
+                  "http://localhost:5173",
+                  "http://localhost:5174",
+                  "http://localhost:3000",
+                  "http://localhost:3001",
+                  "http://localhost:3002",
+                  "https://iot-presence-detector-azure-fronten-nine.vercel.app")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials()
