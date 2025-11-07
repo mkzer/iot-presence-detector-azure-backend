@@ -79,13 +79,18 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins(
-                  "http://localhost:5173",
-                  "http://localhost:5174",
-                  "http://localhost:3000",
-                  "http://localhost:3001",
-                  "http://localhost:3002",
-                  "https://iot-presence-detector-azure-fronten-nine.vercel.app")
+        policy.SetIsOriginAllowed(origin =>
+        {
+            if (string.IsNullOrWhiteSpace(origin)) return false;
+
+            // Allow localhost for development
+            if (origin.StartsWith("http://localhost:")) return true;
+
+            // Allow all Vercel preview and production deployments
+            if (origin.Contains(".vercel.app")) return true;
+
+            return false;
+        })
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials()
